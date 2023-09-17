@@ -4,7 +4,7 @@ const OrderProduct = ({ product }: { product: IOrderProduct }) => {
   return (
     <li className='flex flex-wrap justify-between items-center gap-4'>
       <span className='font-semibold'>{product.name}</span>
-      <div>
+      <div className='flex gap-1'>
         <span className='text-gray-600'>{product.quantity}x</span>
         <span className='text-gray-600'>R$ {product.price.toFixed(2)}</span>
       </div>
