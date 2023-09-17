@@ -3,13 +3,15 @@ import { useGlobalContext } from '../context/useGlobalContext';
 import { IProduct } from '../types/product';
 import Title from '../components/text/Title';
 import { useNavigate } from 'react-router-dom';
-import SelectedOrders from '../components/orderRegister/SelectedOrders';
+import SelectedProducts from '../components/orderRegister/SelectedOrders';
+import ProductsList from '../components/orderRegister/ProductsList';
+import useFetch from '../custom-hooks/useFetch';
 
 const CadastrarEncomendaPage = () => {
   const navigate = useNavigate();
   const { products, setOrders } = useGlobalContext();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<null | string>(null);
+  const { loading, error, request } = useFetch();
+
   const [selectedProducts, setSelectedProducts] = useState<IProduct[]>([]);
   const [quantities, setQuantities] = useState<{ [key: string]: string }>({});
 
@@ -28,38 +30,25 @@ const CadastrarEncomendaPage = () => {
   };
 
   const createNewOrder = async () => {
-    try {
-      setError(null);
-      setLoading(true);
-      const order = {
-        order_products: selectedProducts.map((product) => ({
-          id: product.id,
-          product_name: product.name,
-          quantity: quantities[product.id] || '1',
-          price: parseFloat(product.price),
-        })),
-      };
-      const res = await fetch(
-        import.meta.env.VITE_SERVER_URL + '/api/orders/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(order),
-        }
-      );
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.message);
-      setSelectedProducts([]);
-      setQuantities({});
-      setOrders((prev) => [...prev, json]);
-      navigate('/');
-    } catch (error) {
-      if (error instanceof Error) setError(error.message);
-    } finally {
-      setLoading(false);
-    }
+    const order = {
+      order_products: selectedProducts.map((product) => ({
+        id: product.id,
+        product_name: product.name,
+        quantity: quantities[product.id] || '1',
+        price: parseFloat(product.price),
+      })),
+    };
+    const { json } = await request('/api/orders/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order),
+    });
+    setSelectedProducts([]);
+    setQuantities({});
+    setOrders((prev) => [...prev, json]);
+    navigate('/');
   };
 
   return (
@@ -70,7 +59,8 @@ const CadastrarEncomendaPage = () => {
           <h2 className='text-lg font-semibold'>Selecione os produtos</h2>
           <ul className='border border-gray-300 rounded p-2'>
             {selectedProducts.map((product) => (
-              <SelectedOrders
+              <SelectedProducts
+                key={product.id}
                 product={product}
                 handleQuantityChange={handleQuantityChange}
                 quantities={quantities}
@@ -89,19 +79,14 @@ const CadastrarEncomendaPage = () => {
 
       <div className='flex flex-col items-center'>
         <h2 className='text-lg font-semibold mb-2'>Produtos disponíveis</h2>
-        <ul className='border border-gray-300 rounded p-2'>
+        <ul className='border border-gray-300 rounded p-2 flex flex-col gap-1'>
           {products.map((product) => (
-            <li
+            <ProductsList
               key={product.id}
-              className={`py-1 px-4 cursor-pointer ${
-                selectedProducts.includes(product)
-                  ? 'bg-blue-100 border-b-2 border-blue-500'
-                  : ''
-              }`}
-              onClick={() => handleProductSelect(product)}
-            >
-              {product.name}
-            </li>
+              product={product}
+              selectedProducts={selectedProducts}
+              handleProductSelect={handleProductSelect}
+            />
           ))}
         </ul>
       </div>

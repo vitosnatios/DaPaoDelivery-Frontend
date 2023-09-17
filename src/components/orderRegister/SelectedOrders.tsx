@@ -6,7 +6,7 @@ type Props = {
   quantities: { [key: string]: string };
 };
 
-const SelectedOrders = ({
+const SelectedProducts = ({
   product,
   handleQuantityChange,
   quantities,
@@ -25,4 +25,4 @@ const SelectedOrders = ({
   );
 };
 
-export default SelectedOrders;
+export default SelectedProducts;

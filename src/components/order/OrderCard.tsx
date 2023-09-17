@@ -1,3 +1,4 @@
+import { formatDate } from '../../helpers/formatDate';
 import { IOrder } from '../../types/order';
 import OrderProduct from './OrderProduct';
 
@@ -8,19 +9,6 @@ function OrderCard({
   order: IOrder;
   totalPrice: number;
 }) {
-  const formatDate = (date: string) => {
-    const dateObject = new Date(date);
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    };
-    return dateObject.toLocaleDateString(undefined, options);
-  };
-
   return (
     <div className='bg-white rounded-lg shadow-md p-4 mb-4 border border-gray-300'>
       <h2 className='text-xl font-semibold'>Encomenda n°{order.id}</h2>

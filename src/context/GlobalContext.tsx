@@ -9,6 +9,7 @@ import {
 import { IOrder } from '../types/order';
 import { IProduct } from '../types/product';
 import { isOrder, isProduct } from '../types/typeCheck';
+import useFetch from '../custom-hooks/useFetch';
 
 interface IGlobalContext {
   initialText: string | null;
@@ -27,6 +28,7 @@ export const GlobalContext = createContext<IGlobalContext>({
 });
 
 const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
+  const { request, error } = useFetch();
   const [initialText, setInitialText] = useState<null | string>(null);
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -43,34 +45,28 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
     const fetchOrders = async () => {
       try {
         setInitialText(
-          'Conectando com o servidor, aguarde. A primeira conexão demora mais que as subsequentes.'
+          'Conectando ao servidor. A primeira conexão demora mais que as subsequentes.'
         );
-        const serverStatus = await fetch(
-          import.meta.env.VITE_SERVER_URL + '/server-status'
+        const { response: status } = await request('/server-status');
+        if (!status) setInitialText('Erro ao conectar no servidor.');
+        const { response: ordersRes, json: ordersJson } = await request(
+          '/api/orders'
         );
-        if (!serverStatus.ok)
+        const { response: productsRes, json: productsJson } = await request(
+          '/api/product/get-all'
+        );
+        if (!ordersRes!.ok || !productsRes!.ok) {
           throw new Error('Error connecting to the server.');
-        setInitialText('Baixando.');
-        const ordersRes = await fetch(
-          import.meta.env.VITE_SERVER_URL + '/api/orders'
-        );
-        const productsRes = await fetch(
-          import.meta.env.VITE_SERVER_URL + '/api/product/get-all'
-        );
-        if (!ordersRes.ok || !productsRes.ok)
-          throw new Error('Error connecting to the server.');
-        const ordersJson = await ordersRes.json();
-        const productsJson = await productsRes.json();
+        }
         setOrders(ordersJson.filter(isOrder));
         setProducts(productsJson.filter(isProduct));
         setInitialText(null);
       } catch (error) {
-        console.error(error);
         if (error instanceof Error) setInitialText(error.message);
       }
     };
     fetchOrders();
-  }, []);
+  }, [request, error]);
 
   return (
     <GlobalContext.Provider value={contextValue}>
