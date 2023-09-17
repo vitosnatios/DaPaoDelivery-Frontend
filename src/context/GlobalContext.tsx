@@ -52,6 +52,7 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
         const { response: ordersRes, json: ordersJson } = await request(
           '/api/orders'
         );
+
         const { response: productsRes, json: productsJson } = await request(
           '/api/product/get-all'
         );
