@@ -1,35 +1,41 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { FaBars } from 'react-icons/fa';
+import NavLinks from './Header/NavLinks';
 
 const Header = () => {
-  return (
-    <header className='bg-gray-900 flex flex-wrap justify-between items-center'>
-      <div className='flex items-center space-x-2'>
-        <h1 className='text-2xl font-semibold text-blue-500'>DáPãoDelivery</h1>
-      </div>
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-      <nav className='space-x-4'>
-        <Link to='/' className='hover:text-blue-500'>
-          <span className='text-sm'>Home</span>
+  const toggleMenu = () => {
+    if (window.innerWidth <= 768) setMenuOpen(!isMenuOpen);
+  };
+
+  const handleResize = () => {
+    if (window.innerWidth > 768) {
+      return setMenuOpen(true);
+    }
+    setMenuOpen(false);
+  };
+
+  useEffect(() => {
+    setMenuOpen(window.innerWidth >= 768 ? true : false);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return (
+    <header className='bg-gray-900 text-gray-300 py-4 px-6 md:px-16'>
+      <div className='container mx-auto flex flex-wrap justify-between items-center relative'>
+        <Link to='/' className=' hover:text-white block'>
+          <h1 className='text-3xl font-bold'>DáPãoDelivery</h1>
         </Link>
-        <Link to='/cadastrar-encomenda' className='hover:text-blue-500'>
-          <span className='text-sm'>Cadastrar Encomenda</span>
-        </Link>
-        <Link to='/concluir-encomenda' className='hover:text-blue-500'>
-          <span className='text-sm'>Concluir Encomenda</span>
-        </Link>
-        <Link to='/relatorio' className='hover:text-blue-500'>
-          <span className='text-sm'>Relatório</span>
-        </Link>
-        <Link to='/cadastrar-produto' className='hover:text-blue-500'>
-          <span className='text-sm'>Cadastrar Produto</span>
-        </Link>
-        <Link to='/remover-produto' className='hover:text-blue-500'>
-          <span className='text-sm'>Remover Produto</span>
-        </Link>
-        <Link to='/atualizar-preco' className='hover:text-blue-500'>
-          <span className='text-sm'>Atualizar Preço</span>
-        </Link>
-      </nav>
+
+        <FaBars className='md:hidden  hover:text-white' onClick={toggleMenu} />
+
+        <NavLinks toggleMenu={handleResize} isMenuOpen={isMenuOpen} />
+      </div>
     </header>
   );
 };
