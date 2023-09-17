@@ -32,7 +32,12 @@ const Header = () => {
           <h1 className='text-3xl font-bold'>DáPãoDelivery</h1>
         </Link>
 
-        <FaBars className='md:hidden  hover:text-white' onClick={toggleMenu} />
+        <button>
+          <FaBars
+            className='md:hidden  hover:text-white'
+            onClick={toggleMenu}
+          />
+        </button>
 
         <NavLinks toggleMenu={handleResize} isMenuOpen={isMenuOpen} />
       </div>

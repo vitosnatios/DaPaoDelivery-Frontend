@@ -12,11 +12,10 @@ const useFetch = () => {
         setError(null);
         setLoading(true);
         response = await fetch(import.meta.env.VITE_SERVER_URL + url, options);
-        if (!response.ok) throw new Error(json!.message);
         json = await response.json();
+        if (!response.ok) throw new Error(json.message);
       } catch (err) {
-        console.log(err);
-        if (err instanceof Error) setError(err?.message || 'Error');
+        if (err instanceof Error) setError(err?.message);
       } finally {
         setLoading(false);
       }
