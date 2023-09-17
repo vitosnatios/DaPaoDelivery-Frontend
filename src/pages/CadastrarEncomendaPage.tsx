@@ -3,6 +3,7 @@ import { useGlobalContext } from '../context/useGlobalContext';
 import { IProduct } from '../types/product';
 import Title from '../components/text/Title';
 import { useNavigate } from 'react-router-dom';
+import SelectedOrders from '../components/orderRegister/SelectedOrders';
 
 const CadastrarEncomendaPage = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const CadastrarEncomendaPage = () => {
         }
       );
       const json = await res.json();
+      if (!res.ok) throw new Error(json.message);
       setSelectedProducts([]);
       setQuantities({});
       setOrders((prev) => [...prev, json]);
@@ -61,25 +63,18 @@ const CadastrarEncomendaPage = () => {
   };
 
   return (
-    <div className='bg-white rounded-lg shadow flex flex-col gap-4 items-center py-4'>
+    <div className='bg-white rounded-lg shadow flex flex-col gap-4 items-center p-4'>
       <Title>Cadastrar encomendas</Title>
-      {selectedProducts.length ? (
-        <div className='flex flex-col gap-4 p-2'>
+      {selectedProducts.length > 0 && (
+        <div className='flex flex-col gap-4'>
           <h2 className='text-lg font-semibold'>Selecione os produtos</h2>
           <ul className='border border-gray-300 rounded p-2'>
             {selectedProducts.map((product) => (
-              <li key={product.id} className='grid gap-2 items-center py-1'>
-                <div>{product.name}</div>
-                <input
-                  type='number'
-                  className='p-1 border border-gray-300 rounded'
-                  placeholder='Quantity'
-                  value={quantities[product.id] || '1'}
-                  onChange={(e) =>
-                    handleQuantityChange(product, e.target.value)
-                  }
-                />
-              </li>
+              <SelectedOrders
+                product={product}
+                handleQuantityChange={handleQuantityChange}
+                quantities={quantities}
+              />
             ))}
           </ul>
           {error && <p className='text-red-400 text-center'>{error}</p>}
@@ -90,8 +85,6 @@ const CadastrarEncomendaPage = () => {
             {!loading ? 'Criar encomenda' : 'Carregando'}
           </button>
         </div>
-      ) : (
-        <></>
       )}
 
       <div className='flex flex-col items-center'>

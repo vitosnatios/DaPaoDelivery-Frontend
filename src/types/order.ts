@@ -4,6 +4,7 @@ export interface IOrderProduct {
   price: number;
 }
 export interface IOrder {
+  id: number;
   order_products: IOrderProduct[];
   date: string;
   totalPrice?: number;
