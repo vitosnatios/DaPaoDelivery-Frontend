@@ -11,11 +11,16 @@ import RemoverProdutoPage from './pages/RemoverProdutoPage.tsx';
 import AtualizarPrecoPage from './pages/AtualizarPrecoPage.tsx';
 import Layout from './components/partials/Layout.tsx';
 import GlobalContextProvider from './context/GlobalContext.tsx';
+import NotFound from './pages/NotFound.tsx';
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+      {
+        path: '*',
+        element: <NotFound />,
+      },
       {
         path: '/',
         element: <MainPage />,

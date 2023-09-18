@@ -28,7 +28,11 @@ const Header = () => {
   return (
     <header className='bg-gray-900 text-gray-300 py-4 px-6 md:px-16'>
       <div className='container mx-auto flex flex-wrap justify-between items-center relative'>
-        <Link to='/' className=' hover:text-white block'>
+        <Link
+          to='/'
+          className='flex flex-wrap items-center gap-1 hover:text-white'
+        >
+          <img className='w-20' src='./derpao_padeiro.png' alt='derpao' />
           <h1 className='text-3xl font-bold'>DáPãoDelivery</h1>
         </Link>
 
