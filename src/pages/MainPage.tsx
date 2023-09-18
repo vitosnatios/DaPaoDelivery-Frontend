@@ -8,7 +8,7 @@ function MainPage() {
 
   return (
     <PageContainer>
-      <Title>Encomendas</Title>
+      <Title>Encomendas em aberto</Title>
       {orders.length ? (
         <OrderList orders={orders} />
       ) : (

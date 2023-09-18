@@ -21,7 +21,7 @@ const RemoverProdutoPage = () => {
 
   const handleDeleteProducts = async () => {
     const { response } = await request('/api/product/delete', {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -38,7 +38,7 @@ const RemoverProdutoPage = () => {
   };
 
   return (
-    <div className='min-h-screen bg-gray-100 flex items-center justify-center'>
+    <div className=' bg-gray-100 flex items-center justify-center'>
       <div className='bg-white shadow-md rounded-lg p-8'>
         <h1 className='text-2xl font-semibold mb-4'>Delete Products</h1>
         {error && <p className='text-red-400 text-center'>{error}</p>}
