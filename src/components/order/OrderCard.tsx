@@ -12,7 +12,7 @@ function OrderCard({
   return (
     <div className='bg-white rounded-lg shadow-md p-4 mb-4 border border-gray-300'>
       <h2 className='text-2xl font-semibold mb-2'>Encomenda #{order.id}</h2>
-      <div className='flex flex-wrap gap-2 justify-between items-center'>
+      <div className='flex flex-col gap-2 justify-between'>
         <div className='text-gray-700'>{formatDate(order.date)}</div>
         <ul className='space-y-2'>
           {order.order_products.map((product, index) => (
