@@ -2,7 +2,7 @@
 
 ### React + TypeScript + Vite + TailwindCSS
 
-- [Website url](https://da-pao-delivery-frontend.vercel.app/)
+- [Website url](https://da-pao-delivery.vercel.app/)
 
 - [Server repo](https://github.com/vitosnatios/DaPaoDelivery-backend)
 
