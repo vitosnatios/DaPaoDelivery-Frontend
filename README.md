@@ -2,9 +2,9 @@
 
 ### React + TypeScript + Vite + TailwindCSS
 
-- [Website url](http://www.google.com)
+- [Website url](https://da-pao-delivery-frontend.vercel.app/)
 
-- [Server repo](http://www.google.com)
+- [Server repo](https://github.com/vitosnatios/DaPaoDelivery-backend)
 
 - Configure the .env:
 
