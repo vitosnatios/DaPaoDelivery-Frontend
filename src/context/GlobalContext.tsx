@@ -28,7 +28,7 @@ export const GlobalContext = createContext<IGlobalContext>({
 });
 
 const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
-  const { request, error } = useFetch();
+  const { request } = useFetch();
   const [initialText, setInitialText] = useState<null | string>(null);
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -63,11 +63,12 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
         setProducts(productsJson.filter(isProduct));
         setInitialText(null);
       } catch (error) {
-        if (error instanceof Error) setInitialText(error.message);
+        if (error instanceof Error)
+          setInitialText('Houve algum erro ao se conectar ao servidor.');
       }
     };
     fetchOrders();
-  }, [request, error]);
+  }, [request]);
 
   return (
     <GlobalContext.Provider value={contextValue}>

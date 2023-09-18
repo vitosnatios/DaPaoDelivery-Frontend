@@ -38,16 +38,23 @@ const RemoverProdutoPage = () => {
   };
 
   return (
-    <div className=' bg-gray-100 flex items-center justify-center'>
-      <div className='bg-white shadow-md rounded-lg p-8'>
-        <h1 className='text-2xl font-semibold mb-4'>Delete Products</h1>
-        {error && <p className='text-red-400 text-center'>{error}</p>}
+    <div className='bg-gray-100 min-h-screen flex items-center justify-center'>
+      <div className='bg-white shadow-lg rounded-lg p-8 w-96'>
+        <h1 className='text-3xl font-semibold text-center mb-6 text-red-500'>
+          Delete Products
+        </h1>
+        {error && <p className='text-red-500 text-center mb-4'>{error}</p>}
         {selectedProducts.length > 0 && (
           <button
-            className='bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full mb-4'
+            className={`${
+              loading
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-red-500 hover:bg-red-600'
+            } text-white font-semibold py-2 px-4 rounded-full mb-4 w-full`}
             onClick={!loading ? handleDeleteProducts : () => {}}
+            disabled={loading}
           >
-            {!loading ? 'Deletar Produtos selecionados' : 'Carregando'}
+            {loading ? 'Carregando' : 'Deletar Produtos Selecionados'}
           </button>
         )}
         <ul>
@@ -58,9 +65,9 @@ const RemoverProdutoPage = () => {
                   type='checkbox'
                   checked={selectedProducts.includes(product.id)}
                   onChange={() => handleProductSelect(product.id)}
-                  className='mr-2 text-blue-500'
+                  className='mr-2 text-red-500'
                 />
-                {product.name}
+                <span className='text-gray-700'>{product.name}</span>
               </label>
             </li>
           ))}
