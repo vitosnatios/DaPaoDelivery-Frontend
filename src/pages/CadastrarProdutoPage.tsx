@@ -1,8 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import useFetch from '../custom-hooks/useFetch';
 import { useGlobalContext } from '../context/useGlobalContext';
+import { useNavigate } from 'react-router-dom';
 
 const CadastrarProdutoPage = () => {
+  const navigate = useNavigate();
   const { setProducts } = useGlobalContext();
   const { loading, error, request } = useFetch();
   const [product, setProduct] = useState({
@@ -30,6 +32,7 @@ const CadastrarProdutoPage = () => {
     });
     if (response && response.ok) {
       setProducts((prev) => [...prev, json.product]);
+      navigate('/cadastrar-encomenda');
     }
   };
 
