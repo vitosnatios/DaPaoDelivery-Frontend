@@ -4,7 +4,7 @@
 
 - [Website url](http://www.google.com)
 
-- [Website url](http://www.google.com)
+- [Server repo](http://www.google.com)
 
 - Configure the .env:
 
