@@ -47,7 +47,7 @@ const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
         setInitialText(
           'Conectando ao servidor. A primeira conexão demora mais que as subsequentes.'
         );
-        const { response: status } = await request('/server-status');
+        const { response: status } = await request('/api/server-status');
         if (!status) setInitialText('Erro ao conectar no servidor.');
         const { response: ordersRes, json: ordersJson } = await request(
           '/api/orders'
